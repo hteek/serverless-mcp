@@ -1,0 +1,22 @@
+name: manual deploy
+
+on: [workflow_dispatch]
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    concurrency: dev_deployment
+    outputs:
+      aws_account: ${{ vars.AWS_ACCOUNT }}
+    steps:
+      - name: Checkout [main]
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+  deploy:
+    concurrency: deployment
+    needs: [main]
+    uses: ./.github/workflows/deploy.yml
+    with:
+      aws_account: ${{ needs.main.outputs.aws_account }}

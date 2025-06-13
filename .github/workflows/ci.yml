@@ -1,0 +1,45 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  actions: read
+  contents: read
+  pull-requests: write
+  id-token: write
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    environment: development
+    outputs:
+      aws_account: ${{ vars.AWS_ACCOUNT }}
+      projects: ${{ steps.set-projects.outputs.projects }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup pnpm package manager
+        uses: pnpm/action-setup@v4
+      - name: Setup Node.js with GitHub Package Registry
+        uses: actions/setup-node@v4
+        with:
+          cache: 'pnpm'
+          node-version: '22'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: pnpm lint
+      - run: pnpm test
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    concurrency: deployment
+    needs: [main]
+    uses: ./.github/workflows/deploy.yml
+    with:
+      aws_account: ${{ needs.main.outputs.aws_account }}

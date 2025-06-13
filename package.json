@@ -1,0 +1,108 @@
+{
+  "name": "serverless-mcp",
+  "version": "0.1.0",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": "22",
+    "pnpm": ">=10.12"
+  },
+  "packageManager": "pnpm@10.12.4+sha512.5ea8b0deed94ed68691c9bad4c955492705c5eeb8a87ef86bc62c74a26b037b08ff9570f108b2e4dbd1dd1a9186fea925e527f141c648e85af45631074680184",
+  "bin": {
+    "serverless-mcp": "dist/bin/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "cdk": "pnpm build && cdk",
+    "prepare": "husky",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "imports": {
+    "#mcp": "./lib/functions/lambda/mcp/index.js",
+    "#middleware": "./lib/functions/lambda/middleware/index.js",
+    "#model": "./lib/functions/lambda/model/index.js",
+    "#powertools": "./lib/functions/lambda/powertools/index.js",
+    "#utils": "./lib/functions/lambda/utils/index.js"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "19.8.1",
+    "@commitlint/config-conventional": "19.8.1",
+    "@smithy/types": "4.3.1",
+    "@types/aws-lambda": "8.10.149",
+    "@types/content-type": "1.1.9",
+    "@types/http-errors": "2.0.5",
+    "@types/node": "22.15.31",
+    "@typescript-eslint/eslint-plugin": "8.34.0",
+    "@typescript-eslint/parser": "8.34.0",
+    "@vitest/ui": "3.2.3",
+    "aws-cdk": "2.1018.1",
+    "aws-cdk-github-oidc": "2.4.1",
+    "c12": "3.0.4",
+    "commitizen": "4.3.1",
+    "cz-conventional-changelog": "3.3.0",
+    "esbuild": "0.25.5",
+    "eslint": "9.28.0",
+    "eslint-config-prettier": "10.1.5",
+    "husky": "9.1.7",
+    "lint-staged": "15.3.0",
+    "prettier": "3.5.3",
+    "ts-node": "10.9.2",
+    "typescript": "5.8.3",
+    "vitest": "3.2.3"
+  },
+  "dependencies": {
+    "@aws-lambda-powertools/commons": "2.21.0",
+    "@aws-lambda-powertools/logger": "2.21.0",
+    "@aws-lambda-powertools/metrics": "2.21.0",
+    "@aws-lambda-powertools/tracer": "2.21.0",
+    "@aws-sdk/client-cognito-identity-provider": "3.830.0",
+    "@aws-sdk/client-cost-explorer": "3.830.0",
+    "@aws-sdk/client-dynamodb": "3.830.0",
+    "@aws-sdk/client-sts": "3.830.0",
+    "@middy/core": "6.3.1",
+    "@middy/http-error-handler": "6.3.1",
+    "@middy/util": "6.3.1",
+    "@modelcontextprotocol/sdk": "1.13.0",
+    "aws-cdk-lib": "2.201.0",
+    "constructs": "10.4.2",
+    "dynamodb-onetable": "2.7.7",
+    "http-errors": "2.0.0",
+    "remeda": "2.23.0",
+    "url-pattern": "1.0.3",
+    "zod": "3.25.64"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    },
+    "cz-conventional-changelog": {
+      "defaultScope": "serverless-mcp"
+    }
+  },
+  "lint-staged": {
+    "!(*.test).{ts,tsx,js,jsx}": [
+      "prettier --write",
+      "eslint --fix",
+      "vitest related --coverage=false --reporter=verbose --passWithNoTests"
+    ],
+    "*.test.{ts,tsx,js,jsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
+}
