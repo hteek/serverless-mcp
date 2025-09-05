@@ -47,12 +47,7 @@ export class CloudFrontDistribution extends Distribution {
     id: string,
     props: CloudFrontDistributionProps
   ) {
-    const {
-      domainName,
-      certificate,
-      table,
-      userPool,
-    } = props;
+    const { domainName, certificate, table, userPool } = props;
 
     const functionUrlOrigin = (
       fn: IFunction,
@@ -103,7 +98,7 @@ export class CloudFrontDistribution extends Distribution {
       );
 
     addFunctionUrlBehaviour(
-      '/.well-known/oauth-authorization-server',
+      '/.well-known/oauth-authorization-server*',
       new OauthAuthorizationServerFunction(scope, { domainName, userPool })
     );
     addFunctionUrlBehaviour(
